@@ -1,3 +1,4 @@
+/* Estilos gerais */
 body {
   font-family: Arial, sans-serif;
   background-color: #f5f5f5;
@@ -5,45 +6,80 @@ body {
   padding: 0;
 }
 h1 {
-  background-color: #333;
+  background-color: #00125d;
   color: #fff;
   padding: 10px;
   text-align: center;
 }
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-}
-textarea, input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+
 button {
-  padding: 10px 20px;
-  background-color: #333;
+  width: 30%; /* Ocupa a largura total do container */
+  padding: 12px 20px; /* Aumenta o tamanho do botão */
+  background-color: #00125d;
   color: #fff;
   border: none;
   cursor: pointer;
+  border-radius: 10px; /* Torna o botão um pouco redondo */
 }
-button:hover {
-  background-color: #555;
+
+/* Estilos para dispositivos móveis */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  textarea, input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  #resultados, #sqlUpdate {
+    display: none; /* Inicialmente oculta as divs */
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
 }
-#resultados, #sqlUpdate {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-#sqlUpdate {
-  background-color: #f0f0f0;
-}
-pre {
-  white-space: pre-wrap;
+
+/* Estilos para dispositivos maiores (tablets e desktops) */
+@media (min-width: 769px) {
+  .container {
+    max-width: 800px;
+    margin: 0 auto; /* Centraliza o container */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  textarea {
+    width: 100%;
+    min-height: 150px;
+    margin-bottom: 10px;
+  }
+  input {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 30%;
+  }
+  #resultados, #sqlUpdate {
+    display: none; /* Inicialmente oculta as divs */
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px solid #00125d;
+    border-radius: 5px;
+    font-size: 14px;
+  }
 }
