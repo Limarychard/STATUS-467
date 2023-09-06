@@ -14,13 +14,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function gerarSQL() {
         var xmlInput = document.getElementById('xmlInput');
-        var idLista = document.getElementById('idListaInput').value;
 
         try {
             var parser = new DOMParser();
             var xmlDoc = parser.parseFromString(xmlInput.value, 'text/xml');
 
             var tagsDhEmi = xmlDoc.getElementsByTagName('dhEmi');
+            var cNFValue = xmlDoc.getElementsByTagName('cNF')[0].textContent;
+            var serieValue = xmlDoc.getElementsByTagName('serie')[0].textContent;
 
             if (tagsDhEmi.length > 0) {
                 var valoresDhEmi = [];
@@ -33,14 +34,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (valoresDhEmi.length === 1) {
                     sqlUpdate += "'" + formatarData(valoresDhEmi[0]) + "'\n";
-                    sqlUpdate += "WHERE ID_LISTA = " + idLista;
+                    sqlUpdate += "WHERE CFG_NUMERO_NF = " + cNFValue;
+                    sqlUpdate += '\nAND CFG_SERIE_NF = ' + serieValue;
+                    sqlUpdate += '\nAND CFG_UN = '
                 } else {
                     sqlUpdate += "CASE\n";
                     for (var j = 0; j < valoresDhEmi.length; j++) {
                         sqlUpdate += "    WHEN OUTRA_COLUNA = 'ALGUM_VALOR' THEN '" + formatarData(valoresDhEmi[j]) + "'\n";
                     }
                     sqlUpdate += '    ELSE IDE_DEMI\nEND\n';
-                    sqlUpdate += "WHERE ID_LISTA = " + idLista;
+                    sqlUpdate += "WHERE CFG_NUMERO_NF = " + cNFValue;
+                    sqlUpdate += '\nAND CFG_SERIE_NF = ' + serieValue;
+                    sqlUpdate += '\nAND CFG_UN = '
                 }
 
                 resultadosDiv.innerHTML = '<h3>Resultados:</h3><p>Valor da tag dhEmi:</p><pre>' + valoresDhEmi.join('\n') + '</pre><h3>Instrução SQL UPDATE:</h3><pre>' + sqlUpdate + '</pre>';
@@ -53,13 +58,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function formatarData(data) {
-        // Remova o fuso horário (-03:00)
-        data = data.replace(/-03:00$/, '');
+        // Use uma expressão regular para remover o fuso horário (-03:00, -04:00, etc.)
+        data = data.replace(/-\d{2}:\d{2}$/, '');
 
+        // Divida a data em partes: data e hora
         var partes = data.split('T');
         var dataParte = partes[0];
         var horaParte = partes[1];
-        var dataFormatada = dataParte.split('-').reverse().join('/') + ' ' + horaParte;
+
+        // Divida a parte da data em ano, mês e dia
+        var dataDividida = dataParte.split('-');
+        var dia = dataDividida[2];
+        var mes = dataDividida[1];
+        var ano = dataDividida[0];
+
+        // Formate a data no formato desejado: dd/mm/aaaa hh:mm:ss
+        var dataFormatada = dia + '/' + mes + '/' + ano + ' ' + horaParte;
+
         return dataFormatada;
     }
 });
